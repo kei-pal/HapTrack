@@ -10,7 +10,6 @@ import PrivateRoutes from './utils/PrivateRoutes';
 import HomePage from './pages/HomePage';
 import Login from './pages/LoginPage';
 import ErrorPage from './pages/ErrorPage';
-import { Layout } from './components/Layout';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
