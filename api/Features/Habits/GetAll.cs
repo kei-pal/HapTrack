@@ -1,4 +1,5 @@
-﻿using api.Domain;
+﻿using api.Data;
+using api.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

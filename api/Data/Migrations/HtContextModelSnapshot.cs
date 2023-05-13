@@ -3,11 +3,11 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using api.Domain;
+using api.Data;
 
 #nullable disable
 
-namespace api.Migrations
+namespace api.Data.Migrations
 {
     [DbContext(typeof(HtContext))]
     partial class HtContextModelSnapshot : ModelSnapshot
@@ -29,7 +29,7 @@ namespace api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Habits");
+                    b.ToTable("Habits", (string)null);
                 });
 #pragma warning restore 612, 618
         }

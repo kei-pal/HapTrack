@@ -1,4 +1,4 @@
-using api.Domain;
+using api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

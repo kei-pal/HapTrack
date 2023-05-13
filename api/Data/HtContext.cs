@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using api.Domain;
+using Microsoft.EntityFrameworkCore;
 
-namespace api.Domain;
+namespace api.Data;
 
 public class HtContext : DbContext
 {
