@@ -10,6 +10,7 @@ import PrivateRoutes from './utils/PrivateRoutes';
 import HomePage from './pages/HomePage';
 import Login from './pages/LoginPage';
 import ErrorPage from './pages/ErrorPage';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -25,6 +26,10 @@ function App() {
       errorElement: <ErrorPage/>,
       element: <PrivateRoutes/>,
       children: [
+        {
+          path: '',
+          element: <Dashboard/>
+        },
         {
           path: 'home',
           element: <HomePage />,
