@@ -29,28 +29,46 @@ export default function TemporaryDrawer() {
       setState(open);
     };
     
-    const topItems = [
-      {
-        name: 'Inbox',
-        link: '/inbox',
-        icon: <InboxIcon />,
-      },
-      {
-        name: 'Today',
-        link: '/today',
-        icon: <MailIcon />,
-      },
-      {
-        name: 'Send email',
-        link: '/send-email',
-        icon: <InboxIcon />,
-      },
-      {
-        name: 'Drafts',
-        link: '/drafts',
-        icon: <MailIcon />,
-      },
-    ];
+  const topItems = [
+    {
+      name: 'Inbox',
+      link: '/inbox',
+      icon: <InboxIcon />,
+    },
+    {
+      name: 'Today',
+      link: '/today',
+      icon: <MailIcon />,
+    },
+    {
+      name: 'This Week',
+      link: '/this-week',
+      icon: <InboxIcon />,
+    },
+    {
+      name: 'Filters',
+      link: '/filters',
+      icon: <MailIcon />,
+    },
+  ];
+
+  const bottomItems = [
+    {
+      name: 'To Do',
+      link: '/to-do',
+      icon: <InboxIcon />,
+    },
+    {
+      name: 'Goals',
+      link: '/goals',
+      icon: <MailIcon />,
+    },
+    {
+      name: 'Habits',
+      link: '/habits',
+      icon: <InboxIcon />,
+    }
+  ];
 
   const list = () => (
     <Box
@@ -59,6 +77,11 @@ export default function TemporaryDrawer() {
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
+      <ListItemButton component={Link} to='/'>
+        <ListItemIcon><MailIcon /></ListItemIcon>
+        <ListItemText primary='Dashboard' />
+      </ListItemButton>
+      <Divider />
       <List>
         {topItems.map((item) => (
           <ListItem key={item.name} disablePadding>
@@ -71,13 +94,11 @@ export default function TemporaryDrawer() {
       </List>
       <Divider />
       <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+        {bottomItems.map((item) => (
+          <ListItem key={item.name} disablePadding>
+            <ListItemButton component={Link} to={item.link}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.name} />
             </ListItemButton>
           </ListItem>
         ))}

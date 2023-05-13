@@ -11,6 +11,7 @@ import Inbox from './pages/Inbox';
 import Login from './pages/LoginPage';
 import ErrorPage from './pages/ErrorPage';
 import Dashboard from './pages/Dashboard';
+import Habits from './pages/habits';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -33,6 +34,10 @@ function App() {
         {
           path: 'inbox',
           element: <Inbox />,
+        },
+        {
+          path: 'habits',
+          element: <Habits />,
         }
       ]
     },
