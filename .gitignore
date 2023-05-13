@@ -364,3 +364,5 @@ FodyWeavers.xsd
 /api/LocalDatabase.db
 /api/LocalDatabase.db-shm
 /api/LocalDatabase.db-wal
+/api/LocalDatabase.db-shm
+/api/LocalDatabase.db-wal
