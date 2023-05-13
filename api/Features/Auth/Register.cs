@@ -12,10 +12,13 @@ namespace api.Features.Auth;
 public partial class AuthController : ControllerBase
 {
     private readonly HtContext _context;
+    private readonly IConfiguration _configuration;
 
-    public AuthController(HtContext context)
+    public AuthController(HtContext context, IConfiguration configuration)
     {
         _context = context;
+        _configuration = configuration;
+
     }
 
     [HttpPost("register")]
@@ -44,12 +47,10 @@ public partial class AuthController : ControllerBase
         return Ok(user);
     }
 
-    private void CreatePasswordHash(String password, out byte[] passwordHash, out byte[] passwordSalt)
+    private static void CreatePasswordHash(String password, out byte[] passwordHash, out byte[] passwordSalt)
     {
-        using (var hmac = new HMACSHA512())
-        {
-            passwordSalt = hmac.Key;
-            passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-        }
+        using var hmac = new HMACSHA512();
+        passwordSalt = hmac.Key;
+        passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
     }
 }
