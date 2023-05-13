@@ -11,13 +11,13 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Link } from 'react-router-dom';
 
 
 export default function TemporaryDrawer() {
   const [state, setState] = React.useState<boolean>(false);
 
-  const toggleDrawer =
-    (open: boolean) =>
+  const toggleDrawer = (open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
         event.type === 'keydown' &&
@@ -26,9 +26,31 @@ export default function TemporaryDrawer() {
       ) {
         return;
       }
-
       setState(open);
     };
+    
+    const topItems = [
+      {
+        name: 'Inbox',
+        link: '/inbox',
+        icon: <InboxIcon />,
+      },
+      {
+        name: 'Today',
+        link: '/today',
+        icon: <MailIcon />,
+      },
+      {
+        name: 'Send email',
+        link: '/send-email',
+        icon: <InboxIcon />,
+      },
+      {
+        name: 'Drafts',
+        link: '/drafts',
+        icon: <MailIcon />,
+      },
+    ];
 
   const list = () => (
     <Box
@@ -38,13 +60,11 @@ export default function TemporaryDrawer() {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+        {topItems.map((item) => (
+          <ListItem key={item.name} disablePadding>
+            <ListItemButton component={Link} to={item.link}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.name} />
             </ListItemButton>
           </ListItem>
         ))}

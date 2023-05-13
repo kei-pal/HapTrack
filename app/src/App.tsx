@@ -7,7 +7,7 @@ import { getDesignTokens } from './styles/Theme';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import PrivateRoutes from './utils/PrivateRoutes';
-import HomePage from './pages/HomePage';
+import Inbox from './pages/Inbox';
 import Login from './pages/LoginPage';
 import ErrorPage from './pages/ErrorPage';
 import Dashboard from './pages/Dashboard';
@@ -31,8 +31,8 @@ function App() {
           element: <Dashboard/>
         },
         {
-          path: 'home',
-          element: <HomePage />,
+          path: 'inbox',
+          element: <Inbox />,
         }
       ]
     },
