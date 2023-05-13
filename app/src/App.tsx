@@ -24,7 +24,7 @@ function App() {
     {
       path: "/",
       errorElement: <ErrorPage/>,
-      element: <Layout/>,
+      element: <PrivateRoutes/>,
       children: [
         {
           path: 'home',

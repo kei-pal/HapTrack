@@ -1,10 +1,10 @@
-import PrivateRoutes from '../utils/PrivateRoutes'
+import { Outlet } from 'react-router-dom'
 
 export const Layout = () => {
   return (
     <>
       <h1>test</h1>
-      <PrivateRoutes />
+      <Outlet />
     </>
   )
 }

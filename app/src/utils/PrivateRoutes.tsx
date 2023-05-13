@@ -1,11 +1,12 @@
-import { Outlet, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { Layout } from '../components/Layout';
 
 const PrivateRoutes = () => {
   const token = localStorage.getItem('token');
   const isAuth = !!token;
 
   return (
-    isAuth ? <Outlet /> : <Navigate to="/login" />
+    isAuth ? <Layout /> : <Navigate to="/login" />
   );
 };
 
