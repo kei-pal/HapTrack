@@ -11,12 +11,9 @@ const Habits = () => {
   useEffect(() => {
     const fetchHabits = async () => {
       try {
-        console.log("trying");
         const response = await fetch('/api/Habits');
         if (response.ok) {
           const data = await response.json();
-          
-          console.log(data);
           setHabits(data);
         } else {
           console.error('Failed to fetch habits');
