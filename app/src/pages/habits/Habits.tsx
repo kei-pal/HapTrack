@@ -46,31 +46,29 @@ const Habits = () => {
     dayBeforeDate.setDate(today.getDate() - 2);
     setCurrentDay(today.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase());
     setYesterday(yesterdayDate.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase());
-  }, []); // The empty dependency array ensures the effect runs only once when the component mounts
+  }, []);
 
-  // Function to decode the habit history
-  const decodeHistory = (history: number, daysAgo: number): boolean => {
-    // Shift the bits to the right to get the corresponding bit at the beginning
+  const wasHabitDone = (history: number, daysAgo: number): boolean => {
     const shifted = history >> daysAgo;
-    // Check if the least significant bit is set (1) or not (0)
     return (shifted & 1) === 1;
   };
 
   // Function to calculate the number of consecutive zeros (days since it was last done)
-  const calculateDaysSinceLastDone = (history: number): number => {
-    let days = 0;
-    while ((history & 1) === 0) {
-      days++;
-      history >>= 1;
-    }
-    return days;
-  };
+  // const calculateDaysSinceLastDone = (history: number): number => {
+  //   let days = 0;
+  //   while ((history & 1) === 0) {
+  //     days++;
+  //     history >>= 1;
+  //   }
+  //   return days;
+  // };
 
   // Function to update the habit history when a checkbox is clicked
   const updateHistory = (habit: Habit, daysAgo: number) => {
+    let updatedHistory = habit.history;
     const updatedHabits = habits.map((h) => {
       if (h.id === habit.id) {
-        const updatedHistory = h.history | (1 << daysAgo); // Set the specified day's bit to 1
+        updatedHistory = h.history ^ (1 << daysAgo); // Toggle the specific day's bit using XOR
         return { ...h, history: updatedHistory };
       }
       return h;
@@ -83,7 +81,7 @@ const Habits = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id: habit.id, history: updatedHabits.find((h) => h.id === habit.id)?.history }),
+      body: JSON.stringify({ id: habit.id, history: updatedHistory }),
     })
       .then((response) => {
         if (!response.ok) {
@@ -113,7 +111,8 @@ const Habits = () => {
         </TableHead>
         <TableBody>
           {habits.map((habit) => {
-            const daysSinceLastDone = calculateDaysSinceLastDone(habit.history);
+            const daysSinceLastDone = 1;
+            // const daysSinceLastDone = calculateDaysSinceLastDone(habit.history); - this is buggy
             return (
               <TableRow
                 key={habit.name}
@@ -127,12 +126,12 @@ const Habits = () => {
                 </TableCell>
                 <TableCell>
                   <Button onClick={() => updateHistory(habit, 0)}>
-                    <CheckBox done={decodeHistory(habit.history, 0)} />
+                    <CheckBox done={wasHabitDone(habit.history, 0)} />
                   </Button>
                 </TableCell>
                 <TableCell>
                   <Button onClick={() => updateHistory(habit, 1)}>
-                    <CheckBox done={decodeHistory(habit.history, 1)} />
+                    <CheckBox done={wasHabitDone(habit.history, 1)} />
                   </Button>
                 </TableCell>
                 <TableCell>{daysSinceLastDone}</TableCell>
