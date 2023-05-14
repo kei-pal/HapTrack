@@ -1,9 +1,44 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 
-const Habits = () => {
-  return (
-    <div>habits</div>
-  )
+interface Habit {
+  id: string;
+  name: string;
 }
 
-export default Habits
+const Habits = () => {
+  const [habits, setHabits] = useState<Habit[]>([]);
+
+  useEffect(() => {
+    const fetchHabits = async () => {
+      try {
+        console.log("trying");
+        const response = await fetch('/api/Habits');
+        if (response.ok) {
+          const data = await response.json();
+          
+          console.log(data);
+          setHabits(data);
+        } else {
+          console.error('Failed to fetch habits');
+        }
+      } catch (error) {
+        console.error('Error occurred while fetching habits', error);
+      }
+    };
+
+    fetchHabits();
+  }, []); // The empty dependency array ensures the effect runs only once when the component mounts
+
+  return (
+    <div>
+      <h2>Habits</h2>
+      <ul>
+        {habits.map((habit) => (
+          <li key={habit.id}>{habit.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default Habits;

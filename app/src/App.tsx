@@ -41,6 +41,10 @@ function App() {
           element: <Outlet />,
           children: [
             {
+              path: '',
+              element: <Habits/>
+            },
+            {
               path: 'add',
               element: <AddHabit/>
             }
