@@ -16,7 +16,7 @@ public static class SeedContext
 
         var users = new HtUser[]
         {
-            new HtUser() { Email = "string", PasswordHash = user1Hash, PasswordSalt = user1Salt },
+            new HtUser() { Email = "string", PasswordHash = user1Hash, PasswordSalt = user1Salt, LastLogin = DateTime.UtcNow.AddDays(-10) },
             new HtUser() { Email = "test", PasswordHash = user2Hash, PasswordSalt = user2Salt },
         };
 
