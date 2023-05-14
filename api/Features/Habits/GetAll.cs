@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Extensions;
+using System.Security.Claims;
 using static api.Features.Habits.GetAll;
 
 namespace api.Features.Habits;
@@ -24,7 +25,11 @@ public partial class HabitsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<HabitsVM>>> GetHabits()
     {
+        var userEmail = User.FindFirstValue(ClaimTypes.Email);
+
         var habits = await _context.Habits
+            .Include(h => h.User)
+            .Where(h => h.User.Email == userEmail)
             .Select(h => new HabitsVM
             {
                 Id = h.Id,

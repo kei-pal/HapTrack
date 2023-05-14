@@ -37,7 +37,7 @@ public partial class AuthController : ControllerBase
         return computeHash.SequenceEqual(passwordHash);
     }
 
-    private string CreateJwt(User user)
+    private string CreateJwt(HtUser user)
     {
         List<Claim> claims = new()
         {
