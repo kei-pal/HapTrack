@@ -1,4 +1,5 @@
-﻿using api.Domain.Habits;
+﻿using api.Domain;
+using api.Domain.Habits;
 
 namespace api.Data;
 

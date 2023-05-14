@@ -1,5 +1,6 @@
 ﻿using api.Data;
 using api.Domain.Habits;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Extensions;
@@ -9,6 +10,7 @@ namespace api.Features.Habits;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public partial class HabitsController : ControllerBase
 {
     private readonly HtContext _context;

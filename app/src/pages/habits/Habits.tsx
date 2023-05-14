@@ -25,7 +25,11 @@ const Habits = () => {
   useEffect(() => {
     const fetchHabits = async () => {
       try {
-        const response = await fetch('/api/Habits');
+        const response = await fetch('/api/Habits', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Add the Authorization header with the token
+          },
+        });
         if (response.ok) {
           const data = await response.json();
           setHabits(data);
@@ -84,6 +88,7 @@ const Habits = () => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({ id: habit.id, history: updatedHistory }),
     })
