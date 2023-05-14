@@ -11,6 +11,7 @@ import PhaseIcon from './PhaseIcon';
 interface Habit {
   id: string;
   name: string;
+  phase: string;
 }
 
 const Habits = () => {
@@ -58,7 +59,7 @@ const Habits = () => {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                <PhaseIcon/>
+                <PhaseIcon phase={habit.phase}/>
               </TableCell>
               <TableCell component="th" scope="row">
                 {habit.name}

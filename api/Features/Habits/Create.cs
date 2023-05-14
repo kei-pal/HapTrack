@@ -1,5 +1,6 @@
 ﻿using api.Domain.Habits;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace api.Features.Habits;
 
@@ -24,5 +25,6 @@ public partial class HabitsController : ControllerBase
 
 public record CreateHabitCommand
 {
+    [StringLength(20, MinimumLength = 3)]
     public string Name { get; set; } = default!;
 }

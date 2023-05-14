@@ -6,6 +6,7 @@ import { redirect, useNavigate } from 'react-router-dom';
 const AddHabit = () => {
   const [habitName, setHabitName] = useState('');
   const navigate = useNavigate();
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -24,9 +25,9 @@ const AddHabit = () => {
         // Handle successful response
         navigate('/habits');
       } else {
-        // Handle error response
-        // You can show an error message or perform appropriate error handling
-        console.error('Failed to add habit');
+        response.json().then((data) => {
+          setErrors(data.errors); // Set errors state with the returned errors
+        });
       }
     } catch (error) {
       // Handle network or request error
@@ -51,6 +52,8 @@ const AddHabit = () => {
           label="Habit Name"
           value={habitName}
           onChange={(e) => setHabitName(e.target.value)}
+          error={Boolean(errors.Name)}
+          helperText={errors.Name || ''}
         />
       </div>
     </Box>
