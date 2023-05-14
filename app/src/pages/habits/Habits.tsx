@@ -21,7 +21,6 @@ const Habits = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [currentDay, setCurrentDay] = useState<string>('');
   const [yesterday, setYesterday] = useState<string>('');
-  const [dayBefore, setDayBefore] = useState<string>('');
 
   useEffect(() => {
     const fetchHabits = async () => {
@@ -47,7 +46,6 @@ const Habits = () => {
     dayBeforeDate.setDate(today.getDate() - 2);
     setCurrentDay(today.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase());
     setYesterday(yesterdayDate.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase());
-    setDayBefore(dayBeforeDate.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase());
   }, []); // The empty dependency array ensures the effect runs only once when the component mounts
 
   // Function to decode the habit history
@@ -56,6 +54,16 @@ const Habits = () => {
     const shifted = history >> daysAgo;
     // Check if the least significant bit is set (1) or not (0)
     return (shifted & 1) === 1;
+  };
+
+  // Function to calculate the number of consecutive zeros (days since it was last done)
+  const calculateDaysSinceLastDone = (history: number): number => {
+    let days = 0;
+    while ((history & 1) === 0) {
+      days++;
+      history >>= 1;
+    }
+    return days;
   };
 
   // Function to update the habit history when a checkbox is clicked
@@ -100,46 +108,41 @@ const Habits = () => {
             <TableCell>Habit</TableCell>
             <TableCell>{currentDay}</TableCell>
             <TableCell>{yesterday}</TableCell>
-            <TableCell>{dayBefore}</TableCell>
-            <TableCell>Streak</TableCell>
+            <TableCell>DSLD</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {habits.map((habit) => (
-            <TableRow
-              key={habit.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                <PhaseIcon phase={habit.phase}/>
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {habit.name}
-              </TableCell>
-              <TableCell>
-                <Button onClick={() => updateHistory(habit, 0)}>
-                  <CheckBox done={decodeHistory(habit.history, 0)}/>
-                </Button>
-              </TableCell>
-              <TableCell>
-                <Button onClick={() => updateHistory(habit, 1)}>
-                  <CheckBox done={decodeHistory(habit.history, 1)}/>
-                </Button>
-              </TableCell>
-              <TableCell>
-                <Button onClick={() => updateHistory(habit, 2)}>
-                  <CheckBox done={decodeHistory(habit.history, 2)}/>
-                </Button>
-              </TableCell>
-              <TableCell>
-                51
-              </TableCell>
-            </TableRow>
-          ))}
+          {habits.map((habit) => {
+            const daysSinceLastDone = calculateDaysSinceLastDone(habit.history);
+            return (
+              <TableRow
+                key={habit.name}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  <PhaseIcon phase={habit.phase} />
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {habit.name}
+                </TableCell>
+                <TableCell>
+                  <Button onClick={() => updateHistory(habit, 0)}>
+                    <CheckBox done={decodeHistory(habit.history, 0)} />
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  <Button onClick={() => updateHistory(habit, 1)}>
+                    <CheckBox done={decodeHistory(habit.history, 1)} />
+                  </Button>
+                </TableCell>
+                <TableCell>{daysSinceLastDone}</TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>
-    </>
+  </>
   );
 };
 
