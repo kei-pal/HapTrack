@@ -1,6 +1,8 @@
 ﻿using api.Domain.Habits;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace api.Features.Habits;
 
@@ -11,9 +13,15 @@ public partial class HabitsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Habit>> PostHabit(CreateHabitCommand request)
     {
+        var userEmail = User.FindFirstValue(ClaimTypes.Email);
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == userEmail);
+
+        if (user == null) { return NotFound(); }
+
         var habit = new Habit()
         {
             Name = request.Name,
+            User = user,
         };
 
         _context.Habits.Add(habit);
