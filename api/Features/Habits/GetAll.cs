@@ -1,7 +1,9 @@
 ﻿using api.Data;
-using api.Domain;
+using api.Domain.Habits;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Extensions;
+using static api.Features.Habits.GetAll;
 
 namespace api.Features.Habits;
 
@@ -18,12 +20,27 @@ public partial class HabitsController : ControllerBase
 
     // GET: api/Habits
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Habit>>> GetHabits()
+    public async Task<ActionResult<IEnumerable<HabitsVM>>> GetHabits()
     {
-        if (_context.Habits == null)
-        {
-            return NotFound();
-        }
-        return await _context.Habits.ToListAsync();
+        var habits = await _context.Habits
+            .Select(h => new HabitsVM
+            {
+                Id = h.Id,
+                Name = h.Name,
+                Phase = h.Phase.ToString(),
+            })
+            .ToListAsync();
+
+        return habits;
+    }
+}
+
+public class GetAll
+{
+    public record HabitsVM
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; } = default!;
+        public string Phase { get; set; } = default!;
     }
 }

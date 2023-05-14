@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using api.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -37,5 +39,17 @@ public static class ProgramExtensions
                     ValidateAudience = false,
                 };
             });
+    }
+
+    public static void DbEnsureCreated(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var services = scope.ServiceProvider;
+        var context = services.GetRequiredService<HtContext>();
+        context.Database.Migrate();
+        if (!context.Habits.Any())
+        {
+            context.Seed();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using api.Domain;
+using api.Domain.Habits;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Data;
