@@ -1,5 +1,5 @@
 import './App.css'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import React from 'react';
 import createTheme from '@mui/material/styles/createTheme';
@@ -11,7 +11,8 @@ import Inbox from './pages/Inbox';
 import Login from './pages/LoginPage';
 import ErrorPage from './pages/ErrorPage';
 import Dashboard from './pages/Dashboard';
-import Habits from './pages/habits';
+import Habits from './pages/habits/Habits';
+import AddHabit from './pages/habits/AddHabit';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -37,7 +38,13 @@ function App() {
         },
         {
           path: 'habits',
-          element: <Habits />,
+          element: <Outlet />,
+          children: [
+            {
+              path: 'add',
+              element: <AddHabit/>
+            }
+          ]
         }
       ]
     },
