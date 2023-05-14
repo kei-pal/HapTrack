@@ -28,6 +28,7 @@ public partial class HabitsController : ControllerBase
                 Id = h.Id,
                 Name = h.Name,
                 Phase = h.Phase.ToString(),
+                History = h.History,
             })
             .ToListAsync();
 
@@ -42,8 +43,6 @@ public class GetAll
         public Guid Id { get; set; }
         public string Name { get; set; } = default!;
         public string Phase { get; set; } = default!;
-        public bool Today { get; set; }
-        public bool Yesterday { get; set; }
-        public bool DayBefore { get; set; }
+        public int History { get; set; }
     }
 }

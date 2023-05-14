@@ -8,14 +8,13 @@ import TableRow from '@mui/material/TableRow';
 import React, { useEffect, useState } from 'react';
 import PhaseIcon from './PhaseIcon';
 import CheckBox from './CheckBox';
+import { Button } from '@mui/material';
 
 interface Habit {
   id: string;
   name: string;
   phase: string;
-  today: boolean;
-  yesterday: boolean;
-  dayBefore: boolean;
+  history: number;
 }
 
 const Habits = () => {
@@ -51,6 +50,45 @@ const Habits = () => {
     setDayBefore(dayBeforeDate.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase());
   }, []); // The empty dependency array ensures the effect runs only once when the component mounts
 
+  // Function to decode the habit history
+  const decodeHistory = (history: number, daysAgo: number): boolean => {
+    // Shift the bits to the right to get the corresponding bit at the beginning
+    const shifted = history >> daysAgo;
+    // Check if the least significant bit is set (1) or not (0)
+    return (shifted & 1) === 1;
+  };
+
+  // Function to update the habit history when a checkbox is clicked
+  const updateHistory = (habit: Habit, daysAgo: number) => {
+    const updatedHabits = habits.map((h) => {
+      if (h.id === habit.id) {
+        const updatedHistory = h.history | (1 << daysAgo); // Set the specified day's bit to 1
+        return { ...h, history: updatedHistory };
+      }
+      return h;
+    });
+
+    setHabits(updatedHabits);
+
+    // Call the backend API to update the history
+    // Replace `API_ENDPOINT` with the actual API endpoint
+    fetch(`API_ENDPOINT/${habit.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ history: updatedHabits }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to update habit history');
+        }
+      })
+      .catch((error) => {
+        console.error('Error occurred while updating habit history', error);
+      });
+  };
+
   return (
     <>
     <div>
@@ -81,13 +119,19 @@ const Habits = () => {
                 {habit.name}
               </TableCell>
               <TableCell>
-                <CheckBox done={habit.today}/>
+                <Button onClick={() => updateHistory(habit, 0)}>
+                  <CheckBox done={decodeHistory(habit.history, 0)}/>
+                </Button>
               </TableCell>
               <TableCell>
-                <CheckBox done={habit.yesterday}/>
+                <Button onClick={() => updateHistory(habit, 1)}>
+                  <CheckBox done={decodeHistory(habit.history, 1)}/>
+                </Button>
               </TableCell>
               <TableCell>
-                <CheckBox done={habit.dayBefore}/>
+                <Button onClick={() => updateHistory(habit, 2)}>
+                  <CheckBox done={decodeHistory(habit.history, 2)}/>
+                </Button>
               </TableCell>
               <TableCell>
                 51
