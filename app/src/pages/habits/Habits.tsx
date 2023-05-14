@@ -54,14 +54,18 @@ const Habits = () => {
   };
 
   // Function to calculate the number of consecutive zeros (days since it was last done)
-  // const calculateDaysSinceLastDone = (history: number): number => {
-  //   let days = 0;
-  //   while ((history & 1) === 0) {
-  //     days++;
-  //     history >>= 1;
-  //   }
-  //   return days;
-  // };
+  const calculateDaysSinceLastDone = (history: number): number => {
+    let days = 0;
+    let shifted = history;
+  
+    // Check if the history is not zero and the least significant bit is 0
+    while (shifted !== 0 && (shifted & 1) === 0) {
+      days++;
+      shifted >>= 1; // Right shift the history
+    }
+  
+    return days;
+  };
 
   // Function to update the habit history when a checkbox is clicked
   const updateHistory = (habit: Habit, daysAgo: number) => {
@@ -111,8 +115,8 @@ const Habits = () => {
         </TableHead>
         <TableBody>
           {habits.map((habit) => {
-            const daysSinceLastDone = 1;
-            // const daysSinceLastDone = calculateDaysSinceLastDone(habit.history); - this is buggy
+            // const daysSinceLastDone = 1;
+            const daysSinceLastDone = calculateDaysSinceLastDone(habit.history);
             return (
               <TableRow
                 key={habit.name}
