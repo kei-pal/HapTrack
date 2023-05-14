@@ -1,4 +1,4 @@
-﻿using api.Domain;
+﻿using api.Domain.Habits;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Features.Habits;

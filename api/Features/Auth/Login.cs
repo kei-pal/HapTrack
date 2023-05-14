@@ -27,6 +27,31 @@ public partial class AuthController : ControllerBase
 
         var token = CreateJwt(user);
 
+        var daysSinceLastLogin = ((int)(DateTime.Now - user.LastLogin).TotalDays);
+
+        if (daysSinceLastLogin > 0)
+        {
+            var userHabits = await _context.Habits
+                .Include(h => h.User)
+                .Where(h => h.User == user)
+                .ToListAsync();
+
+            foreach (var habit in userHabits)
+            {
+                if (daysSinceLastLogin < 32)
+                {
+                    habit.History <<= daysSinceLastLogin; // Shift the habit's history to the left
+                }
+                else
+                {
+                    habit.History = 0;
+                }
+            }
+        }
+
+        user.LastLogin = DateTime.Now;
+        await _context.SaveChangesAsync();
+
         return Ok(token);
     }
 
@@ -37,7 +62,7 @@ public partial class AuthController : ControllerBase
         return computeHash.SequenceEqual(passwordHash);
     }
 
-    private string CreateJwt(User user)
+    private string CreateJwt(HtUser user)
     {
         List<Claim> claims = new()
         {

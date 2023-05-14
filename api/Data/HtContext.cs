@@ -1,17 +1,18 @@
 ﻿using api.Domain;
+using api.Domain.Habits;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Data;
 
 public class HtContext : DbContext
 {
-    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<HtUser> Users { get; set; } = null!;
     public DbSet<Habit> Habits { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Configure your entity and property
-        modelBuilder.Entity<User>()
+        modelBuilder.Entity<HtUser>()
             .HasIndex(e => e.Email)
             .IsUnique();
 
