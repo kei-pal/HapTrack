@@ -7,15 +7,22 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import React, { useEffect, useState } from 'react';
 import PhaseIcon from './PhaseIcon';
+import CheckBox from './CheckBox';
 
 interface Habit {
   id: string;
   name: string;
   phase: string;
+  today: boolean;
+  yesterday: boolean;
+  dayBefore: boolean;
 }
 
 const Habits = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
+  const [currentDay, setCurrentDay] = useState<string>('');
+  const [yesterday, setYesterday] = useState<string>('');
+  const [dayBefore, setDayBefore] = useState<string>('');
 
   useEffect(() => {
     const fetchHabits = async () => {
@@ -33,6 +40,15 @@ const Habits = () => {
     };
 
     fetchHabits();
+
+    const today = new Date();
+    const yesterdayDate = new Date(today);
+    yesterdayDate.setDate(today.getDate() - 1);
+    const dayBeforeDate = new Date(today);
+    dayBeforeDate.setDate(today.getDate() - 2);
+    setCurrentDay(today.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase());
+    setYesterday(yesterdayDate.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase());
+    setDayBefore(dayBeforeDate.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase());
   }, []); // The empty dependency array ensures the effect runs only once when the component mounts
 
   return (
@@ -46,10 +62,10 @@ const Habits = () => {
           <TableRow>
             <TableCell>Phase</TableCell>
             <TableCell>Habit</TableCell>
-            <TableCell>Today</TableCell>
-            <TableCell>Yesterday</TableCell>
-            <TableCell>Carbs&nbsp;(g)</TableCell>
-            <TableCell>Protein&nbsp;(g)</TableCell>
+            <TableCell>{currentDay}</TableCell>
+            <TableCell>{yesterday}</TableCell>
+            <TableCell>{dayBefore}</TableCell>
+            <TableCell>Streak</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -64,10 +80,18 @@ const Habits = () => {
               <TableCell component="th" scope="row">
                 {habit.name}
               </TableCell>
-              {/* <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell> */}
+              <TableCell>
+                <CheckBox done={habit.today}/>
+              </TableCell>
+              <TableCell>
+                <CheckBox done={habit.yesterday}/>
+              </TableCell>
+              <TableCell>
+                <CheckBox done={habit.dayBefore}/>
+              </TableCell>
+              <TableCell>
+                51
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

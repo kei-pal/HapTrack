@@ -48,7 +48,6 @@ const AddHabit = () => {
       <div>
       <TextField
           required
-          id="outlined-required"
           label="Habit Name"
           value={habitName}
           onChange={(e) => setHabitName(e.target.value)}
