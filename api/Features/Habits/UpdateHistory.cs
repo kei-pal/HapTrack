@@ -11,6 +11,27 @@ public partial class HabitsController : ControllerBase
     [HttpPut("{id}/history")]
     public async Task<IActionResult> PutHabitHistory(Guid id, UpdateHabitHistoryCommand request)
     {
+        //if (request.History == 0b00000000000000000000000000000000)
+        //{
+        //    Console.WriteLine("New");
+        //}
+        //if (request.History == 0b00000000000000000000000000000001)
+        //{
+        //    Console.WriteLine("Today");
+        //}
+        //if (request.History == 0b00000000000000000000000000000010)
+        //{
+        //    Console.WriteLine("Yesterday");
+        //}
+        //if (request.History == 0b00000000000000000000000000000010)
+        //{
+        //    Console.WriteLine("Day Before");
+        //}
+        //if (request.History == 0b00000000000000000000000000000011)
+        //{
+        //    Console.WriteLine("Today & Yesterday");
+        //}
+
         if (id != request.Id)
         {
             return BadRequest();

@@ -8,7 +8,7 @@ public static class SeedContext
     {
         var habits = new Habit[]
         {
-            new Habit() { Name = "Seeded New Habit", Phase = Phase.New, History = 0b00000000000000000000000000000001 },
+            new Habit() { Name = "Seeded New Habit", Phase = Phase.New, History = 0b00000000000000000000000000000000 },
             new Habit() { Name = "Seeded Strong Habit", Phase = Phase.Strong, History = 0b00000000000000000000000000000111 },
             new Habit() { Name = "Seeded Building Habit", Phase = Phase.Build, History = 0b00000000000000000000000000000011 },
             new Habit() { Name = "Seeded Fading Habit", Phase = Phase.Fade, History = 0b00000000000000000000000000000100 },
