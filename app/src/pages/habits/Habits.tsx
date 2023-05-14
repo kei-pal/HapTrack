@@ -69,15 +69,15 @@ const Habits = () => {
     });
 
     setHabits(updatedHabits);
-
+    console.log({ id: habit.id, history: updatedHabits });
     // Call the backend API to update the history
     // Replace `API_ENDPOINT` with the actual API endpoint
-    fetch(`API_ENDPOINT/${habit.id}`, {
+    fetch(`/api/Habits/${habit.id}/history`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ history: updatedHabits }),
+      body: JSON.stringify({ id: habit.id, history: habit.history }),
     })
       .then((response) => {
         if (!response.ok) {
