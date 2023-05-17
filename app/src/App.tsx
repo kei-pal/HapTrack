@@ -13,6 +13,7 @@ import ErrorPage from './pages/ErrorPage';
 import Dashboard from './pages/Dashboard';
 import Habits from './pages/habits/Habits';
 import AddHabit from './pages/habits/AddHabit';
+import DetailsDialog from './pages/habits/DetailsDialog';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -47,7 +48,7 @@ function App() {
             {
               path: 'add',
               element: <AddHabit/>
-            }
+            },
           ]
         }
       ]
