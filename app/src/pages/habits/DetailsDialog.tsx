@@ -8,6 +8,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import React from 'react';
 
 interface Props {
@@ -46,7 +48,7 @@ const DetailsDialog: React.FC<Props> = ({
   const orderedHistory = [...futureHistory, ...currentAndPastHistory];
 
   // Chunks the history into weeks
-  const chunks = Array(Math.ceil(orderedHistory.length / 7)).fill(0).map(_ => orderedHistory.splice(0, 7));
+  const chunks = Array(Math.ceil(orderedHistory.length / 7)).fill(0).map(_ => orderedHistory.splice(0, 7)).reverse();
 
   return (
     <>
@@ -61,7 +63,7 @@ const DetailsDialog: React.FC<Props> = ({
         }}
       />
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table size="small" aria-label="simple table">
           <TableHead>
             <TableRow>
               {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day) => (
@@ -73,7 +75,9 @@ const DetailsDialog: React.FC<Props> = ({
             {chunks.map((week, weekIndex) => (
               <TableRow key={weekIndex}>
                 {week.map((value, index) => (
-                  <TableCell align="center" key={index}>{value ? "Done" : "Not Done"}</TableCell>
+                  <TableCell align="center" key={index}>
+                    {value ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+                  </TableCell>
                 ))}
               </TableRow>
             ))}
