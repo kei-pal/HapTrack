@@ -30,27 +30,23 @@ const DetailsDialog: React.FC<Props> = ({
   const [name, setName] = React.useState(habit.name);
 
   // Decodes the history to an array of boolean values
-  const history = Array.from({length: 32}, (_, i) => ((habit.history >> i) & 1) === 1);
+  const history = Array.from({length: 32}, (_, i) => ((habit.history >> i) & 1) === 1).reverse();
 
-  // Days of the week
-  const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  const dayOfWeek = new Date().getDay();
+  // If today is Sunday (dayOfWeek is 0), make it 7 to fit the Monday-based week
+  const adjustedDayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
 
-  // Function to get today's day of the week
-  const getDayOfWeek = () => {
-    const date = new Date();
-    const day = date.getDay();
-    return day;
-  };
+  // Get the portion of the history from today and previous days
+  const currentAndPastHistory = history.slice(history.length - adjustedDayOfWeek);
+  
+  // Get the portion of the history for future days of this week
+  const futureHistory = history.slice(0, history.length - adjustedDayOfWeek);
 
-  // Function to get shifted days of the week
-  const getShiftedDaysOfWeek = () => {
-    const dayOfWeek = getDayOfWeek();
-    const shiftedDaysOfWeek = [...daysOfWeek.slice(dayOfWeek), ...daysOfWeek.slice(0, dayOfWeek + 1)].reverse();
-    return shiftedDaysOfWeek;
-  };
+  // Merge the arrays so that currentAndPastHistory appears at the end
+  const orderedHistory = [...futureHistory, ...currentAndPastHistory];
 
   // Chunks the history into weeks
-  const chunks = Array(Math.ceil(history.length / 7)).fill(0).map(_ => history.splice(0, 7));
+  const chunks = Array(Math.ceil(orderedHistory.length / 7)).fill(0).map(_ => orderedHistory.splice(0, 7));
 
   return (
     <>
@@ -68,15 +64,15 @@ const DetailsDialog: React.FC<Props> = ({
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              {getShiftedDaysOfWeek().map((day) => (
+              {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day) => (
                 <TableCell align="center">{day}</TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {chunks.map((week, weekIndex) => (
+            {chunks.reverse().map((week, weekIndex) => (
               <TableRow key={weekIndex}>
-                {week.map((value, index) => (
+                {week.reverse().map((value, index) => (
                   <TableCell align="center" key={index}>{value ? "Done" : "Not Done"}</TableCell>
                 ))}
               </TableRow>
