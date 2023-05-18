@@ -70,9 +70,9 @@ const DetailsDialog: React.FC<Props> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {chunks.reverse().map((week, weekIndex) => (
+            {chunks.map((week, weekIndex) => (
               <TableRow key={weekIndex}>
-                {week.reverse().map((value, index) => (
+                {week.map((value, index) => (
                   <TableCell align="center" key={index}>{value ? "Done" : "Not Done"}</TableCell>
                 ))}
               </TableRow>

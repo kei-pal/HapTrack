@@ -26,7 +26,7 @@ public static class SeedContext
         var habits = new Habit[]
         {
             new Habit() { Name = "Seeded New Habit", User = users[0], Phase = Phase.New, History = 0b00000000000000000000000000000000 },
-            new Habit() { Name = "Seeded Strong Habit", User = users[0], Phase = Phase.Strong, History = 0b00000000000000000000000000000111 },
+            new Habit() { Name = "Seeded Strong Habit", User = users[0], Phase = Phase.Strong, History = 0b00000000000000000000000000011111 },
             new Habit() { Name = "Seeded Building Habit", User = users[1], Phase = Phase.Build, History = 0b00000000000000000000000000000011 },
             new Habit() { Name = "Seeded Fading Habit", User = users[1], Phase = Phase.Fade, History = 0b00000000000000000000000000000100 },
             new Habit() { Name = "Seeded Plateau Habit", User = users[0], Phase = Phase.Plateau, History = 0b00000000000000000000000000000010 },
