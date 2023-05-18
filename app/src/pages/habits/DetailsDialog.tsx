@@ -33,7 +33,7 @@ const DetailsDialog: React.FC<Props> = ({
   const history = Array.from({length: 32}, (_, i) => ((habit.history >> i) & 1) === 1);
 
   // Days of the week
-  const daysOfWeek = ['S', 'S', 'M', 'T', 'W', 'T', 'F'];
+  const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
   // Function to get today's day of the week
   const getDayOfWeek = () => {
@@ -45,7 +45,7 @@ const DetailsDialog: React.FC<Props> = ({
   // Function to get shifted days of the week
   const getShiftedDaysOfWeek = () => {
     const dayOfWeek = getDayOfWeek();
-    const shiftedDaysOfWeek = [...daysOfWeek.slice(dayOfWeek), ...daysOfWeek.slice(0, dayOfWeek)];
+    const shiftedDaysOfWeek = [...daysOfWeek.slice(dayOfWeek), ...daysOfWeek.slice(0, dayOfWeek + 1)].reverse();
     return shiftedDaysOfWeek;
   };
 
