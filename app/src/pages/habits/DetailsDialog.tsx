@@ -11,6 +11,10 @@ import Paper from '@mui/material/Paper';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import React from 'react';
+import Button from '@mui/material/Button';
+import EditIcon from '@mui/icons-material/Edit';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 
 interface Props {
   open: boolean;
@@ -53,15 +57,12 @@ const DetailsDialog: React.FC<Props> = ({
   return (
     <>
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>{habit.name}</DialogTitle>
-      <TextField 
-        label="Habit Name" 
-        value={habit.name}
-        sx={{m:2}}
-        InputProps={{
-          readOnly: true,
-        }}
-      />
+      <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', p:2}}>
+        <DialogTitle>{habit.name}</DialogTitle>
+        <IconButton>
+          <EditIcon />
+        </IconButton>
+      </Box>
       <TableContainer component={Paper}>
         <Table size="small" aria-label="simple table">
           <TableHead>
@@ -76,7 +77,7 @@ const DetailsDialog: React.FC<Props> = ({
               <TableRow key={weekIndex}>
                 {week.map((value, index) => (
                   <TableCell align="center" key={index}>
-                    {value ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+                    {value ? <CheckBoxIcon color='primary' /> : <CheckBoxOutlineBlankIcon color='primary' />}
                   </TableCell>
                 ))}
               </TableRow>
