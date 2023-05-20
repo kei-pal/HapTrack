@@ -9,6 +9,8 @@ import React, { useEffect, useState } from 'react';
 import PhaseIcon from './PhaseIcon';
 import CheckBox from './CheckBox';
 import { Button } from '@mui/material';
+import { NavLink, useNavigate } from 'react-router-dom';
+import DetailsDialog from './DetailsDialog';
 
 interface Habit {
   id: string;
@@ -21,25 +23,10 @@ const Habits = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [currentDay, setCurrentDay] = useState<string>('');
   const [yesterday, setYesterday] = useState<string>('');
+  const [selectedHabit, setSelectedHabit] = useState<Habit | null>(null);
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchHabits = async () => {
-      try {
-        const response = await fetch('/api/Habits', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Add the Authorization header with the token
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setHabits(data);
-        } else {
-          console.error('Failed to fetch habits');
-        }
-      } catch (error) {
-        console.error('Error occurred while fetching habits', error);
-      }
-    };
 
     fetchHabits();
 
@@ -51,6 +38,24 @@ const Habits = () => {
     setCurrentDay(today.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase());
     setYesterday(yesterdayDate.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase());
   }, []);
+
+  const fetchHabits = async () => {
+    try {
+      const response = await fetch('/api/Habits', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Add the Authorization header with the token
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setHabits(data);
+      } else {
+        console.error('Failed to fetch habits');
+      }
+    } catch (error) {
+      console.error('Error occurred while fetching habits', error);
+    }
+  };
 
   const wasHabitDone = (history: number, daysAgo: number): boolean => {
     const shifted = history >> daysAgo;
@@ -102,6 +107,21 @@ const Habits = () => {
       });
   };
 
+  const handleHabitClick = (habit: Habit) => {
+    setSelectedHabit(habit);
+    setDetailsDialogOpen(true);
+  }
+
+  const handleDetailsDialogClose = () => {
+    setSelectedHabit(null);
+    setDetailsDialogOpen(false);
+    reloadData();
+  }
+
+  const reloadData = () => {
+    fetchHabits();
+  }
+
   return (
     <>
     <div>
@@ -130,8 +150,10 @@ const Habits = () => {
                 <TableCell component="th" scope="row">
                   <PhaseIcon phase={habit.phase} />
                 </TableCell>
-                <TableCell component="th" scope="row">
-                  {habit.name}
+                <TableCell component="th" scope="row" >
+                  <Button onClick={() => handleHabitClick(habit)}>
+                    {habit.name}
+                  </Button>
                 </TableCell>
                 <TableCell>
                   <Button onClick={() => updateHistory(habit, 0)}>
@@ -150,6 +172,13 @@ const Habits = () => {
         </TableBody>
       </Table>
     </TableContainer>
+    {selectedHabit && (
+      <DetailsDialog
+      open={detailsDialogOpen}
+      handleClose={handleDetailsDialogClose}
+      habit={selectedHabit}
+    />
+    )}
   </>
   );
 };
