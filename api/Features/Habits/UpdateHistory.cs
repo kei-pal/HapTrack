@@ -43,6 +43,6 @@ public class UpdateHistory
     public record UpdateHabitHistoryCommand
     {
         public Guid Id { get; set; }
-        public int History { get; set; }
+        public byte[] History { get; set; } = Array.Empty<byte>();
     }
 }

@@ -40,7 +40,7 @@ function App() {
         {
           path: 'habits',
           element: <Outlet />,
-          children: [
+           children: [
             {
               path: '',
               element: <Habits/>

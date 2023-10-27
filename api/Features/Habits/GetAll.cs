@@ -28,18 +28,19 @@ public partial class HabitsController : ControllerBase
         var userEmail = User.FindFirstValue(ClaimTypes.Email);
 
         var habits = await _context.Habits
-            .Include(h => h.User)
-            .Where(h => h.User.Email == userEmail)
-            .Select(h => new HabitsVM
-            {
-                Id = h.Id,
-                Name = h.Name,
-                Phase = h.Phase.ToString(),
-                History = h.History,
-            })
-            .ToListAsync();
+        .Include(h => h.User)
+        .Where(h => h.User.Email == userEmail)
+        .ToListAsync();
 
-        return habits;
+        var habitsVM = habits.Select(h => new HabitsVM
+        {
+            Id = h.Id,
+            Name = h.Name,
+            Phase = h.Phase.ToString(),
+            History = h.History,
+        }).ToList();
+
+        return habitsVM;
     }
 }
 
@@ -50,6 +51,6 @@ public class GetAll
         public Guid Id { get; set; }
         public string Name { get; set; } = default!;
         public string Phase { get; set; } = default!;
-        public int History { get; set; }
+        public byte[] History { get; set; } = default!;
     }
 }

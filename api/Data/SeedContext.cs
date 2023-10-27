@@ -25,12 +25,12 @@ public static class SeedContext
 
         var habits = new Habit[]
         {
-            new Habit() { Name = "Seeded New Habit", User = users[0], Phase = Phase.New, History = 0b00000000000000000000000000000000 },
-            new Habit() { Name = "Seeded Strong Habit", User = users[0], Phase = Phase.Strong, History = 0b00000000000000000000000000011111 },
-            new Habit() { Name = "Seeded Building Habit", User = users[1], Phase = Phase.Build, History = 0b00000000000000000000000000000011 },
-            new Habit() { Name = "Seeded Fading Habit", User = users[1], Phase = Phase.Fade, History = 0b00000000000000000000000000000100 },
-            new Habit() { Name = "Seeded Plateau Habit", User = users[0], Phase = Phase.Plateau, History = 0b00000000000000000000000000000010 },
-            new Habit() { Name = "Seeded Every Other Day Habit", User = users[0], Phase = Phase.Plateau, History = 0b00101010101010101010101010101010 },
+            new Habit() { Name = "Seeded New Habit", User = users[0], Phase = Phase.New, History = new byte[] { 0b00000000, 0b00000000, 0b0000000, 0b0000000 } },
+            new Habit() { Name = "Seeded Strong Habit", User = users[0], Phase = Phase.Strong, History = new byte[] { 0b11111111, 0b11111111, 0b11111111 } },
+            new Habit() { Name = "Seeded Building Habit", User = users[1], Phase = Phase.Build, History = new byte[] { 0b00000000, 0b00001111, 0b11111111 } },
+            new Habit() { Name = "Seeded Fading Habit", User = users[0], Phase = Phase.Fade, History = new byte[] { 0b11111111, 0b11110000, 0b00000000, 0b00000000 } },
+            new Habit() { Name = "Seeded Plateau Habit", User = users[0], Phase = Phase.Plateau, History = new byte[] { 0b00010001, 0b00010001, 0b00010001 } },
+            new Habit() { Name = "Seeded Every Other Day Habit", User = users[0], Phase = Phase.Plateau, History = new byte[] { 0b10101010, 0b10101010, 0b10101010 } },
         };
 
         context.Habits.AddRange(habits);

@@ -2,22 +2,20 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
 #nullable disable
 
-namespace api.Data.Migrations
+namespace api.Migrations
 {
     [DbContext(typeof(HtContext))]
-    [Migration("20230514164441_LinkHabitsToUser")]
-    partial class LinkHabitsToUser
+    partial class HtContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.16");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
 
             modelBuilder.Entity("api.Domain.Habits.Habit", b =>
                 {
@@ -25,8 +23,9 @@ namespace api.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("History")
-                        .HasColumnType("INTEGER");
+                    b.Property<byte[]>("History")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
 
                     b.Property<string>("Name")
                         .IsRequired()
