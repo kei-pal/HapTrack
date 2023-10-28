@@ -40,11 +40,11 @@ public partial class AuthController : ControllerBase
             {
                 if (daysSinceLastLogin < 32)
                 {
-                    habit.History <<= daysSinceLastLogin; // Shift the habit's history to the left
+                    // TODO: shift/add byte array to represent missed days
                 }
                 else
                 {
-                    habit.History = 0;
+                    habit.History = new byte[] { 00000000, 00000000, 0000000 };
                 }
             }
         }

@@ -8,33 +8,46 @@ using api.Data;
 
 #nullable disable
 
-namespace api.Data.Migrations
+namespace api.Migrations
 {
     [DbContext(typeof(HtContext))]
-    [Migration("20230513135639_AddUsers")]
-    partial class AddUsers
+    [Migration("20230520060555_InitialStoringHistoryByteArray")]
+    partial class InitialStoringHistoryByteArray
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.16");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
 
-            modelBuilder.Entity("api.Domain.Habit", b =>
+            modelBuilder.Entity("api.Domain.Habits.Habit", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<byte[]>("History")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Phase")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Habits");
                 });
 
-            modelBuilder.Entity("api.Domain.User", b =>
+            modelBuilder.Entity("api.Domain.HtUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,6 +55,9 @@ namespace api.Data.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("LastLogin")
                         .HasColumnType("TEXT");
 
                     b.Property<byte[]>("PasswordHash")
@@ -58,6 +74,17 @@ namespace api.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("api.Domain.Habits.Habit", b =>
+                {
+                    b.HasOne("api.Domain.HtUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
